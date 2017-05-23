@@ -3,8 +3,8 @@
 	* [koa-co](http://book.apebook.org/minghe/koa-action/co/start.html)
 
 ```javascript
-	co(function* (){
-		var data = yield Promise.resolve({a:1});
-		console.log(data.a)    // 1
-	})
+co(function* (){
+	var data = yield Promise.resolve({a:1});
+	console.log(data.a)    // 1
+})
 ```
