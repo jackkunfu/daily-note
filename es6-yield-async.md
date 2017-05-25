@@ -41,6 +41,22 @@ a.next({c:1});
 console.log(d)    //  {c:1}
 ```
 
+*generator function 的特征是 constructor.name === 'GeneratorFunction'*
+*generator 对象，特征是带有 next 与 throw 方法*
+```javascript
+//判断是否是 generator function
+function isGeneratorFunction(obj) {
+    var constructor = obj.constructor;
+    if (!constructor) return false;
+    if ('GeneratorFunction' === constructor.name || 'GeneratorFunction' === constructor.displayName) return true;
+    return isGenerator(constructor.prototype);
+}
+//判断是否是 generator 对象
+function isGenerator(obj) {
+    return 'function' == typeof obj.next && 'function' == typeof obj.throw;
+} 
+```
+
 ### async/await:
 * 类似yield，比yield多了层语法糖
 * 不需要在继承co模块，直接就可以var d = await 异步方法的形式把异步结果赋给变量
