@@ -86,11 +86,6 @@ writeStream.on('drain', function(){   //
     // 缓存区的读完写完后事件，让读取流重启读取源数据到缓存区
     readStream.resume();
 })
-
-// 方法二、用pipe方法，上面一堆用一行就够了
-readStream.pipe(writeStream);
-
-
 ```
 
 ## 上面方法用pipe一行就可以搞定
@@ -104,6 +99,8 @@ var writeStream = fs.createWriteStream('xx2.png');
 // 方法二、用pipe方法，上面一堆用一行就够了
 readStream.pipe(writeStream);
 ```
+
+
 *流的暂停*
     - readStream.pause()
 *流的重启*
