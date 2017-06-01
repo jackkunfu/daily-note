@@ -67,3 +67,6 @@ async function aa(){
 }
 aa();    // 1
 ```
+
+
+##co模块约定，yield命令后面只能是 Thunk 函数或 Promise 对象，而async函数的await命令后面，可以是Promise 对象和原始类型的值（数值、字符串和布尔值，但这时等同于同步操作）。
