@@ -19,3 +19,14 @@ moudle: {
         loader: 'react-loader!babel-loader'    // 多个loader之间用！，具体执行顺序是由后往前，先用babel-loader处理，然后再用react-loader处理babel-loader处理之后的文件
     }]
 }
+
+*最新的loaders变成rules*
+// before
+modules: {
+  loaders: [{...}]
+}
+
+// after
+modules: {
+  rules: {...}
+}
