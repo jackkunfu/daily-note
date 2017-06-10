@@ -87,3 +87,9 @@ req.end();
 * querystring.escape(str)  // 反转义
     - querystring.escape('%3C%E5%9B%A7%3E')   // '<囧>'
 
+
+### cross-env
+*启动项目时设置环境变量命令，兼容window和mac*
+    - npm i cross-env --save-dev 
+    - cross-env NODE_ENV=development && ....
+

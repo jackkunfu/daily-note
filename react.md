@@ -47,3 +47,7 @@ this.props.data的值就是传入的 {a:1}
 用es6写法时  在constructor方法里声明 
 用React.createClass 声明组件时，在getInitialState方法中return对象返回
 
+### defaultProps 
+* 定义组件的默认props
+* AppComponent.defaultProps = { key: value, ... }
+
