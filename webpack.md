@@ -30,3 +30,8 @@ modules: {
 modules: {
   rules: {...}
 }
+
+### require.ensure  Webpack的特殊语法，用来设置 code-split point
+* 当打包构建应用时，Javascript 包会变得非常大，影响页面加载。如果我们能把不同路由对应的组件分割成不同的代码块，然后当路由被访问的时候才加载对应组件，这样就更加高效了。
+* Webpack 将相同 chunk 下的所有异步模块打包到一个异步块里面 —— 这也意味着我们无须明确列出 require.ensure 的依赖（传空数组就行）。
+

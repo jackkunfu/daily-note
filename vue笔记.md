@@ -27,3 +27,35 @@
 	Object.assign({}, this.ss, { a: 1, b: 2 })  这句不行
 
 	this.ss = Object.assign(this.ss, { a: 1, b: 2 })  这样第一个参数不是一个新的空对象也不行
+
+### 异步模板
+Vue.component('async-example', function (resolve, reject) {
+  setTimeout(function () {
+    // Pass the component definition to the resolve callback
+    resolve({
+      template: '<div>I am async!</div>'
+    })
+  }, 1000)
+})
+
+Vue.component('async-webpack-example', function (resolve) {
+  // This special require syntax will instruct Webpack to
+  // automatically split your built code into bundles which
+  // are loaded over Ajax requests.
+  require(['./my-async-component'], resolve)
+})
+
+Vue.component(
+  'async-webpack-example',
+  () => import('./my-async-component')
+)
+
+new Vue({
+  // ...
+  components: {
+    'my-component': () => import('./my-async-component')
+  }
+})
+
+### $refs 获取当前组件元素    查找元素  可以减少获取dom节点的消耗了
+* 组件结构中有子组件带有属性ref="aa"标识， 获取该组件方法为 this.$refs.aa 
