@@ -1,11 +1,5 @@
-1. v-bind:  v-bind:src="{{ img.src }}" 简写成 :src="img.src" (简写后{{}}需去掉)
 
-2. v-for:   v-for="item in items" 或者 v-for="(value, index) in items"  //value在前~
 
-3. $index： <div @click="delItem($index)"></div> //$index可以在v-on=的方法中直接用来作为参数
-
-4. data-XXX:  <div :data-index="index"></div>   //前面加:来绑定
-	
 5. $event:  vue中获取点击的当前元素可以在点击的方法里传入参数 $event：
 		$event.currenTarget为当前绑定事件的原生dom元素
 		$event.srcElement位当前点击到的原生dom元素
@@ -14,11 +8,10 @@
 
 7. this.$data  用于用来获取实例中的data对象
 
-8. Vue.set/vm.$set     //基于原生Object.defineProperty实现
+8. 
 	//给当前的实例中的data对象的ss属性动态增加新未声明的值 
 	Vue.set(this.ss, 'a', a)  或者  vm.$set(this.ss, 'a', a);
-	注意点：第一个参数不能为this.$data对象，直接给根元素添加新属性值无效，新的根元素建议直接data里新增上
-		直接this.ss.a = XXX  这种写法不能达到响应式改变页面内容的效果 需要用Vue.set或当前实例的$set
+	
 
 	或者：
 
@@ -59,3 +52,44 @@ new Vue({
 
 ### $refs 获取当前组件元素    查找元素  可以减少获取dom节点的消耗了
 * 组件结构中有子组件带有属性ref="aa"标识， 获取该组件方法为 this.$refs.aa 
+
+
+### 简写
+* v-bind => : 
+  - :src
+  - :class
+  - :data-xx
+
+* v-on => @
+  - @click
+
+
+### vue2.0 改动
+* ready => mounted
+  - mounted 方法不能保证dom已经编译加载完毕，最好需要再加上 this.$nextTick(function(){  // do sth   })
+* $index
+  - 1.0中时直接可以在循环中使用$index, 2.0中不能使用
+  - 2.0循环用 (value,index) in someArr  具体元素中直接用括号里的第二个变量字段
+
+
+### 实例正常结构
+```
+new Vue({
+  el: '',  
+  data: {},   // 数据模型
+  filter: () => {},   // 过滤器方法函数
+  mounted: () => {},   // 加载业务逻辑
+  methods: () => {}    //  事件处理注册
+})
+```
+
+### Vue.set/vm.$set     //基于原生Object.defineProperty实现
+* 添加data数据模型中没有的属性，为了能双向绑定需要用
+* Vue.set(key(data上已存在的或者其他的字段item等), newKey(要添加的字段), value(添加字段的值))
+* this.$set()  //   两种写法
+* 注意点：第一个参数不能为this.$data对象，直接给根元素添加新属性值无效，新的根元素建议直接data里新增上
+  - 直接this.ss.a = XXX  这种写法不能达到响应式改变页面内容的效果 需要用Vue.set或当前实例的$set
+
+### v-model
+* 用在需要联动的数据字段上，比如输入框，当输入框内容变化时，需要更新别的地方内容，需要用到v-model
+
