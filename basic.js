@@ -118,3 +118,8 @@ var Ss = {
 var aarr = [11,22,33,44,55]
 // console.log(Ss.shuffle(aarr))   //  普通调用
 console.log(Ss.shuffle.call(aarr))// 面向对象调用
+
+// 去除多余的空格
+function trim(str) {
+    return str ? str.replace(/^\s*|\s*$/g, '') : '';
+}
