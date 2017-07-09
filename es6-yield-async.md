@@ -1,13 +1,14 @@
 ### 赋值，结构 
 * var {hasOwnProperty} = {}
     - 相当于 var {hasOwnProperty} = new Object()
+    - var {hasOwnProperty: hasOwnProperty} = new Object()
     - var hasOwnProperty = new Object()的hasOwnProperty方法
     - var hasOwnProperty = Object.prototype.hasOwnProperty
 * var {slice} = []
-    - var {slice} = new Array()
+    - var {slice} = new Array()  var
+    - var {slice: slice} = new Array()
     - var slice = new Array()的slice方法
     - var slice = Array.prototype.slice
-    - 
 
 ### koa中可以直接用 var data = yield Promise.resolve(data):
 * 因为koa中集成了co，可以直接获取生成器函数的执行结果
