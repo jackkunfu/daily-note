@@ -1,12 +1,17 @@
 ### entry 文件入口
+* 数组，最终所有打包成一个文件的时候用，数组里填入需要打包的文件
+* 对象，打包出各个文件，各个文件名为对象的键值
 
-### out
+### output
+* 文件输出
+* filename: 单一文件时为自定义的名称，多个文件时用[name].[hash/chunkhash].js
 
 ### resolve  require中的文件路径简写     文件后缀的处理
-    - extensions : ['', '.js', '.jsx']   // 后缀简写处理，实际会按顺序一个一个查找，先找到哪个就停止
-    - alias: {}    //  其他文件目录简写
+* extensions:['', '.js', '.jsx'] //后缀简写处理，实际会按顺序一个一个查找，先找到哪个就停止
+* alias: {} //  其他文件目录简写
 
 ### moudle
+```
 moudle: {
     preLoaders: [{    //   preLoaders  所有的处理之前都要经过的处理
         test: /\.(js|jsx)$/,
@@ -20,7 +25,7 @@ moudle: {
     }]
 }
 
-*最新的loaders变成rules*
+//最新的loaders变成rules
 // before
 modules: {
   loaders: [{...}]
@@ -30,8 +35,13 @@ modules: {
 modules: {
   rules: {...}
 }
+```
 
 ### require.ensure  Webpack的特殊语法，用来设置 code-split point
 * 当打包构建应用时，Javascript 包会变得非常大，影响页面加载。如果我们能把不同路由对应的组件分割成不同的代码块，然后当路由被访问的时候才加载对应组件，这样就更加高效了。
 * Webpack 将相同 chunk 下的所有异步模块打包到一个异步块里面 —— 这也意味着我们无须明确列出 require.ensure 的依赖（传空数组就行）。
 
+
+### htmlwebpackplugin
+* template： html模板文件路径名称
+* inject： 打包后的文件注入的位置：一般有head body或者不需要注入的时候用false
