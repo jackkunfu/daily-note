@@ -34,13 +34,15 @@ moudle: {
     - babel-loader 传参也可以在pakage.json里添加"babel":["presets":"latest"]
 
 * test 匹配文件扩展名
-* loader
+* loader 也可以用 loaders,
+    - loader的值时字符串
+    - loaders的值时多个loader的数组
     - 匹配文件的解析器
     - 多个之间用!隔开
     - 执行顺序是从右往左
     - 每个解析器传参可以加 ?xx=xx 的形式，也可以增加，query字段的形式
 
-* css
+* css-loader
     - style-loader!css-loader?importLoaders=1!postcss-loader
     - style-loader!css-loader!postcss-loader!less-loader(或者用sass-loader)
     - postcss-loader不能给css中用@import引用的样式处理前缀
@@ -56,7 +58,7 @@ postcss:[
 ]
 ```
 
-* html
+* html-loader
     - 如果是一般的结构片段用html-loader返回的是一段结构字符串，可以直接插入到页面中
         + var html = require('./a.html')
         + document.body.innerHTML = html
@@ -67,12 +69,31 @@ postcss:[
         + var html = tpl(data)
         + document.body.innerHTML = html
 
+* file-loader
+    - 图片编译loader
+    - test: /\.(jpg|png|gif|svg)$\
+    - loader: 'file-loader'
+    - 在img标签中和css中使用图片，webpack处理后相对路径能找到，模板中找不到：
+        + 用 ${ require('相对路径') } 来解决
+    - 改变图片打包后的地址
+        + query: { name: 'images/[name]-[hash:5].[ext]' }
+        + hash:5表示取5位hash值，[ext]表示当前文件后缀
 
-### require.ensure  Webpack的特殊语法，用来设置 code-split point
-* 当打包构建应用时，Javascript 包会变得非常大，影响页面加载。如果我们能把不同路由对应的组件分割成不同的代码块，然后当路由被访问的时候才加载对应组件，这样就更加高效了。
-* Webpack 将相同 chunk 下的所有异步模块打包到一个异步块里面 —— 这也意味着我们无须明确列出 require.ensure 的依赖（传空数组就行）。
+* url-loader   可以减小小文件的请求资源，但是会影响html文件大小
+    - 打包文件或图片，可以设置最大值，把文件转换成base64编码
+    - 大于设置的值时，交给file-loader处理
+    - query: { limit: 1024, name: 'images/[name]-[hash:5].[ext]' }
+
+* image-loader
+    - 
 
 
 ### htmlwebpackplugin
 * template： html模板文件路径名称
 * inject： 打包后的文件注入的位置：一般有head body或者不需要注入的时候用false
+
+
+### require.ensure  Webpack的特殊语法，用来设置 code-split point
+* 当打包构建应用时，Javascript 包会变得非常大，影响页面加载。如果我们能把不同路由对应的组件分割成不同的代码块，然后当路由被访问的时候才加载对应组件，这样就更加高效了。
+* Webpack 将相同 chunk 下的所有异步模块打包到一个异步块里面 —— 这也意味着我们无须明确列出 require.ensure 的依赖（传空数组就行）。
+
