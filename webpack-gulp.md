@@ -1,3 +1,5 @@
+## webpack
+
 ### entry 文件入口
 * 数组，最终所有打包成一个文件的时候用，数组里填入需要打包的文件
 * 对象，打包出各个文件，各个文件名为对象的键值
@@ -45,3 +47,32 @@ modules: {
 ### htmlwebpackplugin
 * template： html模板文件路径名称
 * inject： 打包后的文件注入的位置：一般有head body或者不需要注入的时候用false
+
+
+
+
+
+## gulp
+### gulp-rev  gulp-rev-collector
+* 处理缓存
+* 生成css-hash文件以及对应的manifest json文件
+```
+gulp.task('rev-css-json', function(){
+    gulp.src('./public/app/public/assets/css/**/*.css')
+        .pipe(rev())  //set hash key
+        .pipe(gulp.dest('./public/app-rev/public/assets/css/'))
+        .pipe(rev.manifest()) //set hash key json
+        .pipe(gulp.dest('./rev/css/')); //dest hash key json
+})
+```
+* 根据css manifest json文件,处理html里的css名称
+```
+gulp.task('rev-css', function(){
+    gulp.src(['./rev/css/*.json', './public/app/view/**/*.html'])
+        .pipe(revCollector({
+            replaceReved: true
+        }))
+        .pipe(gulp.dest('./public/app-rev/view/'))
+})
+```
+* 文件不改变的情况下，多次执行产生的hash值都是一样的
