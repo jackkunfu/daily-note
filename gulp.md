@@ -11,6 +11,7 @@
     - gulp.task('xx', gulp.series('a', 'b', gulp.parallel('c', 'd'), e))
     - 执行a之后执行b，执行b之后，并行执行c和d
     - series里的任务是顺序执行的，parallel里的任务是同时执行的。
+
 ```
 gulp.task('del-rev', function(){
     return del([revDir, destDir])
@@ -42,34 +43,25 @@ gulp.task('rev',gulp.series('del-rev',gulp.parallel('css-json', 'js-json'),cb))
 * 先把文件名称中添加md5
 * 先rev()出对应的json文件
 * 然后根据json文件替换掉html中的文件链接名称
+* 如果文件没有改动，多次重复执行rev得到的hash值都是一样的
 ```
-    gulp.task('default', ['del-rev', 'rev']);
-
     gulp.task('del-rev', function(){
         return del([revDir, destDir])
     })
 
-    gulp.task('rev-css-json', function(){
-        return gulp.src("./app/css/**/*.css")
-            .pipe(rev())
-            .pipe(gulp.dest(destDir+'/css/'))
-            .pipe(rev.manifest())
-            .pipe(gulp.dest(revDir+'/css/'))
+    gulp.task('rev-json', ['del-rev'], function(){
+        return gulp.src(["./app/**/*.css", "./app/**/*.js"])
+        .pipe(rev())
+        .pipe(gulp.dest(destDir))
+        .pipe(rev.manifest())
+        .pipe(gulp.dest(revDir))
     });
 
-    gulp.task('rev-js-json', function(){
-        return gulp.src("./app/js/**/*.js")
-            .pipe(rev())
-            .pipe(gulp.dest(destDir+'/js/'))
-            .pipe(rev.manifest())
-            .pipe(gulp.dest(revDir+'/js/'))
-    });
-
-    gulp.task('rev',['rev-css-json', 'rev-js-json'], function(){
+    gulp.task('rev', ['rev-json'], function(){
         gulp.src([revDir+'/**/*.json', devDir+"/*.html"])
-            .pipe(revCollector({
-                replaceReved: true
-            }))
-            .pipe(gulp.dest(destDir))
+        .pipe(revCollector({
+            replaceReved: true
+        }))
+        .pipe(gulp.dest(destDir))
     })
 ```
