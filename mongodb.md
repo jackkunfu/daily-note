@@ -14,3 +14,37 @@
 * db.test.update(条件：{a:1},{$set: {b:2}})   //更新
 * db.test.remove(条件：{a:1})   //移除
 * db.dropDatabase()  // 删除当前数据表
+
+
+### mongoose
+* 项目中使用直接在server启动文件中开启连接就行了
+	- 在app.js或server.js中import 连接对象
+* 不必每次请求每次连一次
+* 具体每次请求时直接schema操作即可
+* DeprecationWarning: Mongoose: mpromise (mongoose's default promise library) is deprecated, plug in your own promise library instead: http://mongoosejs.com/docs/promises.html
+* 连接之前加上一句 mongoose.Promise = global.Promise;  来解决
+* var db = mongoose.connect("mongodb://127.0.0.1:27017/mongooseTest");  
+```
+import mongoose from 'mongoose';
+
+mongoose.Promise = global.Promise;
+mongoose.connect('http:localhost:27107/test', {server:{auto_reconnect:true}});
+
+const db = mongoose.connection;
+
+db.once('open', () => {
+	console.log('连接数据库成功')
+})
+
+db.on('error', function(error) {
+    console.error('Error in MongoDb connection: ' + error);
+    mongoose.disconnect();
+});
+
+db.on('close', function() {
+    console.log('数据库断开，重新连接数据库');
+    mongoose.connect('http:localhost:27107/test', {server:{auto_reconnect:true}});
+});
+
+export default db;
+```
