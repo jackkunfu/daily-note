@@ -100,3 +100,82 @@ new Vue({
   }
 })
 
+
+### vuex
+* 使用
+  - Vue.use(Vuex)
+  - new Vuex.Store({ state, ..., ... })
+  - 各个组件中使用这些值 this.$store.xxx
+* 公共状态展示，比如页面顶部导航，每个页面的顶部内容显示都不同
+  - 一般在store定义存储一个变量 var state = { topTip:'' }
+  - 公共模板实例中 computed : { topTip(){ return this.$store.state.topTip } }
+  - 子组件变化时 在子组件 mounted: { this.$store.state.topTip = 'xxx' }, 就可以改变顶部内容的值
+
+
+### vue-router
+* 使用
+  - Vue.use(vue-router)
+  - 指定模板路径： const XXX = require('@/page/xxx.vue'))
+  - 懒加载指定模板路径
+    + const XXX = r => require.ensure([], () => r(require('@/page/login')), 'xxx');
+    + require.ensure 是webpack 打包时的语法
+    + 最后一个参数是包文件的名称
+  - var routes = [{path: '/xx', component: XXX, children: [] }]
+  - new vueRouter({ routes })
+* 命名路由
+  - 指定路由路径，组件时加上name字段
+  - 组件直减跳转传参
+    + query: <router-link :to="{path: '/xxx', query: obj}"></router-link>
+    + params: <router-link :to="{name: 'xxx', params: obj}"></router-link>
+* 组件中路由跳转
+  - this.$router.push(path)
+* 路由跳转前的钩子
+  ```
+    router.beforeEach((to, from, next) => {
+      // 路由跳转前的钩
+      // console.log(to)
+      // console.log(from)
+      if (to.matched.some(record => record.meta.requiresAuth)) {
+          if (window.localStorage.pdUserId == undefined) {
+              next({
+                  path: '/',
+                  query: { redirect: to.fullPath }
+              })
+          } else {
+              next()
+          }
+      } else {
+          next() // 确保一定要调用 next()
+      }  
+    })
+
+  ```
+
+
+### router-view
+  - var routes = [{ path: '/xx', component: XXX, children: [{path: '/xx', component: XXX}] }]
+  - 组件中可以继续使用router-view
+
+
+### 抽象组件
+* 不会渲染成真实的dom结构
+* tempalte
+  - 当循环体不是同一个结构时，可以在tempate上进行 v-for 循环，v-if v-else判断不同的情况渲染不同的结构
+  - 组件模板必须只有一个根元素，不然会报错
+* transtion
+  - 定义元素过度的动画，包在需要动画的结构外面，不会渲染出另外的结构
+* keep-alive
+  - 包裹动态组件时，会缓存不活动的组件实例，而不是销毁它们
+  - 当组件在 <keep-alive> 内被切换，它的 activated 和 deactivated 这两个生命周期钩子函数将会被对应执行。
+  - 组件被缓存，再次切换回来时，貌似不触发组件mounted里的代码
+* router-view
+  - 配合vue-router使用，渲染不同的组件模板单页应用
+  - 组件里也可以使用router-view,这时候一般渲染改组件模板对应路由中的 children 数组中定义的组件
+
+
+
+### data
+* 如果组件里data中的值是根据另外一个值的判断来初始化为什么值的时候，
+  - 可能不能取到准确更新的值，应该是因为数据是同步渲染的，一句判断的时候还在声明阶段，值为undefined
+  - 解决方法：需要判断的都默认个初始值，在mounted 函数里再次判断更新这个值
+
