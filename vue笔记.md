@@ -124,10 +124,10 @@ new Vue({
   - new vueRouter({ routes })
 * 命名路由
   - 指定路由路径，组件时加上name字段
-  - 组件直减跳转传参
+  - 组件之间跳转传参
     + query: <router-link :to="{path: '/xxx', query: obj}"></router-link>
     + params: <router-link :to="{name: 'xxx', params: obj}"></router-link>
-* 组件中路由跳转
+* 组件js中跳转到另一个组件
   - this.$router.push(path)
 * 路由跳转前的钩子
   ```
@@ -150,6 +150,12 @@ new Vue({
     })
 
   ```
+  * 组件之间传参，貌似传递的只是一个引用关系，内存中的数据还是同一块
+    - 比如编辑列表，跳转后的编辑页面中更改内容
+    - 不保存直接浏览器返回，没保存的数据也会更新到列表中有相应变化
+    - 解决方法
+    - 获取到传递过来的数据this.$route.xxx 之后的
+    - copy出一个同样的数据到一个变量，让组件中的字段等于这个单独的变量
 
 
 ### router-view
@@ -173,9 +179,18 @@ new Vue({
   - 组件里也可以使用router-view,这时候一般渲染改组件模板对应路由中的 children 数组中定义的组件
 
 
-
 ### data
 * 如果组件里data中的值是根据另外一个值的判断来初始化为什么值的时候，
   - 可能不能取到准确更新的值，应该是因为数据是同步渲染的，一句判断的时候还在声明阶段，值为undefined
   - 解决方法：需要判断的都默认个初始值，在mounted 函数里再次判断更新这个值
+
+### methods
+* methods 里的方法不能用箭头函数，用箭头函数访问不到data中的字段
+    - 理由是箭头函数绑定了父级作用域的上下文，所以 this 将不会按照期望指向 Vue 实例
+```
+methods: {
+  add: function(){},
+  edit: function(){}
+}
+```
 
