@@ -194,3 +194,19 @@ methods: {
 }
 ```
 
+### 数组内容变化，Vue检测不会更新dom
+* 当你利用索引直接设置一个项时，例如： vm.items[indexOfItem] = newValue
+* 当你修改数组的长度时，例如： vm.items.length = newLength
+* 解决方法：用Vue.set/this.$set或者用Vue的数组变异方法，可以触发dom更新
+```
+// 下面三个方法都可以执行
+Vue.set(arr, index, newDataObj)
+this.$set(arr, index, newDataObj)
+arr.splice(index, 1, newDataObj)
+```
+
+### mixins：想在实例外部，定义各个methos,data等周期里的
+*
+
+
+
