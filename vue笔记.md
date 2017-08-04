@@ -205,8 +205,35 @@ this.$set(arr, index, newDataObj)
 arr.splice(index, 1, newDataObj)
 ```
 
-### mixins：想在实例外部，定义各个methos,data等周期里的
-*
+### mixins
+* 最大化的复用代码（偷懒）
+* 定义一些公用的的数据以及逻辑的一个对象
+* 把该对象放到实例的mixins数组里
+```
+var mix = {
+  data(){
+    return {
+      key: v,
+      key2: vv
+    }
+  },
+  methods: {
+    a(){},
+    b(){}
+  }
+}
+
+// 实例中就可以用 mixins 引用外部的定义好的周期方法及属性
+new Vue({
+  mixins: [mix],
+  data(){},
+})
+//
+```
+* mixins里定义的字段会先初始化，然后组件本身的属性才初始化，最终进行合并
+* 重复字段的，组件本身后初始化，组件本身的优先级较高
+* mixins之后，组件data里无须再定义变量，组件data里也要return {}，不然会报错
+* 原因应该是Vue的合并策略methods对象可以被合并，data/mounted 这些是方法被重新执行覆盖掉了
 
 
 

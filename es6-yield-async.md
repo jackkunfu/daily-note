@@ -80,5 +80,26 @@ async function aa(){
 aa();    // 1
 ```
 
+### co模块约定，yield命令后面只能是 Thunk 函数或 Promise 对象，而async函数的await命令后面，可以是Promise 对象和原始类型的值（数值、字符串和布尔值，但这时等同于同步操作）。
 
-##co模块约定，yield命令后面只能是 Thunk 函数或 Promise 对象，而async函数的await命令后面，可以是Promise 对象和原始类型的值（数值、字符串和布尔值，但这时等同于同步操作）。
+
+### class
+```
+class A{
+    constructor(x, y){
+        this.x = x;
+        this.y = y;
+
+
+        // 如果想给funA 使用 bind 绑定到this，
+        // 直接在方法后面写.bind(this)，会报错
+        // 解决方法是在constructor里指定，如下
+        this.funA = this.funA.bind(this);
+
+    }
+
+    funA(){      
+        // do sth
+    }
+}
+```
