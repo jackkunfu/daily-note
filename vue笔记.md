@@ -1,24 +1,24 @@
 
 
 5. $event:  vue中获取点击的当前元素可以在点击的方法里传入参数 $event：
-		$event.currenTarget为当前绑定事件的原生dom元素
-		$event.srcElement位当前点击到的原生dom元素
+        $event.currenTarget为当前绑定事件的原生dom元素
+        $event.srcElement位当前点击到的原生dom元素
 
 6. this.$options  用于用来获取实例中自定义的属性
 
 7. this.$data  用于用来获取实例中的data对象
 
 8. 
-	//给当前的实例中的data对象的ss属性动态增加新未声明的值 
-	Vue.set(this.ss, 'a', a)  或者  vm.$set(this.ss, 'a', a);
-	
-	或者：
+    //给当前的实例中的data对象的ss属性动态增加新未声明的值 
+    Vue.set(this.ss, 'a', a)  或者  vm.$set(this.ss, 'a', a);
+    
+    或者：
 
-	this.ss = Object.assign({}, this.ss, { a: 1, b: 2 })   、、这个可以
+    this.ss = Object.assign({}, this.ss, { a: 1, b: 2 })   、、这个可以
 
-	Object.assign({}, this.ss, { a: 1, b: 2 })  这句不行
+    Object.assign({}, this.ss, { a: 1, b: 2 })  这句不行
 
-	this.ss = Object.assign(this.ss, { a: 1, b: 2 })  这样第一个参数不是一个新的空对象也不行
+    this.ss = Object.assign(this.ss, { a: 1, b: 2 })  这样第一个参数不是一个新的空对象也不行
 
 
 
@@ -204,6 +204,38 @@ Vue.set(arr, index, newDataObj)
 this.$set(arr, index, newDataObj)
 arr.splice(index, 1, newDataObj)
 ```
+* 给数组中的项增加临时的属性字段或者数组中的数组增加临时属性字段
+    - 新增字段变化时，vue监测不到数据的变化，从而不会改变dom
+    - 解决方法：循环设置$set
+    ```
+        //  准备给lists中的所有项增加一个cur字段，代表当前有没有被选中
+        this.conditionArr = [
+            {
+                name: '周期', 
+                list: [
+                    {name: '今天'}, {name: '最近3天'}, {name: '最近7天'}
+                ]
+            },
+            {
+                name: '周期', 
+                list: [
+                    {name: '今天'}, {name: '最近3天'}, {name: '最近7天'}
+                ]
+            }
+        ]
+
+        var _this = this;
+        this.conditionArr.forEach((element, i) => {
+            element.list.forEach((el, j) => {
+                //这句时注释的不能用
+                // el.cur = false;   // 直接循环设置新值，vue监测不到数据变化，不会更新dom，
+
+                // 上面那句看似正常的逻辑和下面实际正常的逻辑不能一起用，一起用会导致下面的也没有效果
+                this.$set(this.conditionArr[i].list[j], 'cur', false)  // 这句设置值的同时，也把新增的属性挂在到vue上，可以被监测到
+            })
+        })
+    ```
+
 
 ### mixins
 * 最大化的复用代码（偷懒）
