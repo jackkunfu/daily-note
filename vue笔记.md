@@ -268,4 +268,15 @@ new Vue({
 * 原因应该是Vue的合并策略methods对象可以被合并，data/mounted 这些是方法被重新执行覆盖掉了
 
 
+### 小规范
+* props数组里的属性，不需要在data里再次声明，可以直接dom中用
+* computed里的属性，在data里重复定义会报错
+* 组件template里根元素只能有一个，多个会报错
+* methods 对象里的方法不能用箭头函数，不然继承不到this
+
+### 小技巧
+* @click=""的事件中可以写多条执行语句
+    - span(@click="cur=j;someMthod(i,j)")
+
+
 
