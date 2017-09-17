@@ -267,6 +267,38 @@ new Vue({
 * mixins之后，组件data里无须再定义变量，组件data里也要return {}，不然会报错
 * 原因应该是Vue的合并策略methods对象可以被合并，data/mounted 这些是方法被重新执行覆盖掉了
 
+### 生产环境部署
+* vue-cli默认的打包部署到服务器子目录会出现不抱错，但是页面空白的情况
+  - 原因：找不到对应路由
+  - 方法：项目文件夹config文件夹index.js里 assetsPublicPath 改成 子目录的路径名称，重新打包即可
+
+### v-html
+* 可以让html结构以html结构展示
+
+
+### vue子组件获取父组件异步传来的数据
+* 正常使用 传递不了数据的变化
+* 解决：
+  - 调用子组件时，外层再增加个异步请求到的数据的判断，有变化或者存在时才渲染，能获取到异步请求之后的数据
+    + div(v-if="pageInfo.curPage")
+      + page-ctn(:curPage="pageInfo.curPage" :totalPage="pageInfo.totalPage" @pageChange="pageChange")
+  - 异步请求之后，要用this.$set设置数据的监控
+    + this.$set(this.pageInfo, 'curPage', d.model.page)
+      + this.$set(this.pageInfo, 'totalPage', d.model.total)
+
+
+### 复杂数据渲染时，可能深层次的数据缺失，导致报错，渲染失败
+* 需要在深层次dom数据渲染的dom 或父级元素上 做个判断 v-if 就会避免数据缺失报错，不渲染的情况
+```
+div(v-if="item.acApiStatistics")
+  .row 访问量: {{item.acApiStatistics.visitCount}}
+  .row 总耗时: {{item.acApiStatistics.durationSize}}
+  .row 平均耗时: {{item.acApiStatistics.durationSizeAverage}}
+  .row 成功次数: {{item.acApiStatistics.visitSuccessCount}}
+  .row 失败次数: {{item.acApiStatistics.visitFailCount}}
+  .row 成功率: {{item.acApiStatistics.visitSuccessPercent}}
+```
+
 
 ### 小规范
 * props数组里的属性，不需要在data里再次声明，可以直接dom中用
