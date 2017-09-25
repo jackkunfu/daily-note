@@ -8,10 +8,10 @@
 
 7. this.$data  用于用来获取实例中的data对象
 
-8. 
-    //给当前的实例中的data对象的ss属性动态增加新未声明的值 
+8.
+    //给当前的实例中的data对象的ss属性动态增加新未声明的值
     Vue.set(this.ss, 'a', a)  或者  vm.$set(this.ss, 'a', a);
-    
+
     或者：
 
     this.ss = Object.assign({}, this.ss, { a: 1, b: 2 })   、、这个可以
@@ -23,11 +23,11 @@
 
 
 ### $refs 获取当前组件元素    查找元素  可以减少获取dom节点的消耗了
-* 组件结构中有子组件带有属性ref="aa"标识， 获取该组件方法为 this.$refs.aa 
+* 组件结构中有子组件带有属性ref="aa"标识， 获取该组件方法为 this.$refs.aa
 
 
 ### 简写
-* v-bind => : 
+* v-bind => :
   - :src
   - :class
   - :data-xx
@@ -211,13 +211,13 @@ arr.splice(index, 1, newDataObj)
         //  准备给lists中的所有项增加一个cur字段，代表当前有没有被选中
         this.conditionArr = [
             {
-                name: '周期', 
+                name: '周期',
                 list: [
                     {name: '今天'}, {name: '最近3天'}, {name: '最近7天'}
                 ]
             },
             {
-                name: '周期', 
+                name: '周期',
                 list: [
                     {name: '今天'}, {name: '最近3天'}, {name: '最近7天'}
                 ]
@@ -327,14 +327,12 @@ div(v-if="item.acApiStatistics")
 ### Vue.use(github vue/src/core/global-api/use.js)
 ```
 import { toArray } from '../util/index'
-
 export function initUse (Vue: GlobalAPI) {
   Vue.use = function (plugin: Function | Object) {
     const installedPlugins = (this._installedPlugins || (this._installedPlugins = []))
     if (installedPlugins.indexOf(plugin) > -1) {
       return this
     }
-
     // additional parameters
     const args = toArray(arguments, 1)
     args.unshift(this)
@@ -351,3 +349,7 @@ export function initUse (Vue: GlobalAPI) {
 * 执行Vue.use(newObj)的时候，把Vue对象用unshift传入进入对象方法的第一个参数，这样自定义的模块组件就可以在自己的代码中使用Vue对象构造器了
 * 如果newObj存在install方法，执行install 方法，所以自定义组件或对象一般要有个install方法
 * 如果没有install方法，如果本身是个方法，执行本身的方法
+
+
+### 把vue对象直接重置为空对象，会影响数据之间的双向动态绑定
+* 可以用Objdect.keys(someObj).map((v)=>{ this.$set(this.someObj, v, '') })来把数据还原为空字符串

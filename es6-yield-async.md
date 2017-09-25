@@ -1,4 +1,4 @@
-### 赋值，结构 
+### 赋值，结构
 * var {hasOwnProperty} = {}
     - 相当于 var {hasOwnProperty} = new Object()
     - var {hasOwnProperty: hasOwnProperty} = new Object()
@@ -66,7 +66,7 @@ function isGeneratorFunction(obj) {
 //判断是否是 generator 对象
 function isGenerator(obj) {
     return 'function' == typeof obj.next && 'function' == typeof obj.throw;
-} 
+}
 ```
 
 ### async/await:
@@ -103,3 +103,18 @@ class A{
     }
 }
 ```
+
+### async await 捕获异常
+* 直接执行 await somePromiseFun()， 如果存在异常错误，会导致后面的代码全都不执行
+```
+try{
+    await somePromiseFun()
+}
+catch(e){
+    console.log(e);
+}
+```
+
+### 箭头函数this
+* 默认会继承上层的this
+* 别的对象调用某个对象的方法a， 如果a 是一个箭头函数，执行时this指向还是原来的对象，会自动保存创建时的this，不受调用影响。
