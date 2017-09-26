@@ -88,8 +88,9 @@ var a = someArr.map(async (item)=>{
     return item;
 })
 console.log(a)  //   虽然map 循环里已经只i额return await 之后的值了 ，但是最终 a里的每一项还都是一个promise
-// 想得到最终的数据 可以用Promise.all
-var aa = await Promise.all(a);    //  Promise前面的await不能省略，最终aa的值还是await得出
+// 想得到最终的数据 还是需要await处理下，这里是个Promise数组 可以用Promise.all处理
+//  Promise.all前面的await不能省略
+var aa = await Promise.all(a);    
 console.log(aa)    // 经过Promise.all处理的结果 会是想要的数组，每一项是正常的值
 
 // 上面可以简写
