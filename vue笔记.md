@@ -277,7 +277,8 @@ new Vue({
 
 
 ### vue子组件获取父组件异步传来的数据
-* 正常使用 传递不了数据的变化
+* 传递不了数据的变化,深层次的新增的动态变量数据，须this.$set，来让数据vue监控数据的变化
+* 传值props时的变量要用 v-bind:xxx    简写成 :xxx
 * 解决：
   - 调用子组件时，外层再增加个异步请求到的数据的判断，有变化或者存在时才渲染，能获取到异步请求之后的数据
     + div(v-if="pageInfo.curPage")
@@ -285,6 +286,45 @@ new Vue({
   - 异步请求之后，要用this.$set设置数据的监控
     + this.$set(this.pageInfo, 'curPage', d.model.page)
       + this.$set(this.pageInfo, 'totalPage', d.model.total)
+
+### 子组件获取到props之后的处理
+* props中的获取的变量，不能直接使用在子组件dom中，须子组件定义一个新值去保存传递过来的数据
+```
+props: ['aaa'],
+data(){
+  return {
+    : this.aaa
+  }
+}
+```
+* 当子组件渲染之后,父组件中的传递过来的数据变化时，子组件的数据却不跟着变化的解决方法
+  - 需要用到computed, computed中定义变量的方法是 return 传过来的值，这样就可以更新父组件中的值的变化
+  - 不过这样可能会报xxx没有设置setter
+```
+props: ['aaa'],
+computed: {
+  xxx() {
+    return this.aaa
+  }
+}
+```
+  - 设置setter
+```
+props: ['aaa'],
+computed: {
+  xxx: function() {
+    get: function(){
+      return this.aaa
+    },
+    set: function(v){
+      this.aaa = v
+    }
+    
+  }
+}
+```
+  - 不过设置好set之后，功能正常了，不过可能会有错误信息，说不能直接使用props里的值，但不影响功能
+
 
 
 ### 复杂数据渲染时，可能深层次的数据缺失，导致报错，渲染失败
@@ -302,13 +342,16 @@ div(v-if="item.acApiStatistics")
 
 ### 小规范
 * props数组里的属性，不需要在data里再次声明，可以直接dom中用
-* computed里的属性，在data里重复定义会报错
+* computed里的属性，在data里重复定义会报错, 应该是我computed没搞懂
 * 组件template里根元素只能有一个，多个会报错
-* methods 对象里的方法不能用箭头函数，不然继承不到this
+* methods 对象里的方法不能用箭头函数，继承不到this
 
 ### 小技巧
 * @click=""的事件中可以写多条执行语句
     - span(@click="cur=j;someMthod(i,j)")
+
+
+
 
 
 
