@@ -1,4 +1,4 @@
-### 赋值，结构 
+### 赋值，结构
 * var {hasOwnProperty} = {}
     - 相当于 var {hasOwnProperty} = new Object()
     - var {hasOwnProperty: hasOwnProperty} = new Object()
@@ -66,7 +66,7 @@ function isGeneratorFunction(obj) {
 //判断是否是 generator 对象
 function isGenerator(obj) {
     return 'function' == typeof obj.next && 'function' == typeof obj.throw;
-} 
+}
 ```
 
 ### async/await:
@@ -78,6 +78,41 @@ async function aa(){
     console.log(data.a)    // 1
 }
 aa();    // 1
+```
+* async 函数总是返回promise，返回值只是一个primitive值，async函数也会通过return自动将返回值包装成一个Promise对象返回
+```
+var a = someArr.map(async (item)=>{
+    var lists = (await tryAwait('get', '/permission/menu/' + item.id, {})).model || [];
+    item.lists = lists;
+    console.log(item)
+    return item;
+})
+console.log(a)  //   虽然map 循环里已经只i额return await 之后的值了 ，但是最终 a里的每一项还都是一个promise
+// 想得到最终的数据 可以用Promise.all
+var aa = await Promise.all(a);    //  Promise前面的await不能省略，最终aa的值还是await得出
+console.log(aa)    // 经过Promise.all处理的结果 会是想要的数组，每一项是正常的值
+
+// 上面可以简写
+var aa = await Promise.all(
+    v.map(async (item)=>{
+        var lists = (await tryAwait('get', '/permission/menu/' + item.id, {})).model || [];
+        item.lists = lists;
+        console.log(item)
+        return item;
+    })
+)
+```
+* async await如果直接执行出错，会导致后面的代码都不执行，所以需要用到try catch捕获异常处理
+
+### async await 捕获异常
+* 直接执行 await somePromiseFun()， 如果存在异常错误，会导致后面的代码全都不执行
+```
+try{
+    await somePromiseFun()
+}
+catch(e){
+    console.log(e);
+}
 ```
 
 ### co模块约定，yield命令后面只能是 Thunk 函数或 Promise 对象，而async函数的await命令后面，可以是Promise 对象和原始类型的值（数值、字符串和布尔值，但这时等同于同步操作）。
@@ -103,3 +138,7 @@ class A{
     }
 }
 ```
+
+### 箭头函数this
+* 默认会继承上层的this
+* 别的对象调用某个对象的方法a， 如果a 是一个箭头函数，执行时this指向还是原来的对象，会自动保存创建时的this，不受调用影响。
