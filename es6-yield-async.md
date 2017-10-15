@@ -79,6 +79,42 @@ async function aa(){
 }
 aa();    // 1
 ```
+* async 函数总是返回promise，返回值只是一个primitive值，async函数也会通过return自动将返回值包装成一个Promise对象返回
+```
+var a = someArr.map(async (item)=>{
+    var lists = (await tryAwait('get', '/permission/menu/' + item.id, {})).model || [];
+    item.lists = lists;
+    console.log(item)
+    return item;
+})
+console.log(a)  //   虽然map 循环里已经只i额return await 之后的值了 ，但是最终 a里的每一项还都是一个promise
+// 想得到最终的数据 还是需要await处理下，这里是个Promise数组 可以用Promise.all处理
+//  Promise.all前面的await不能省略
+var aa = await Promise.all(a);    
+console.log(aa)    // 经过Promise.all处理的结果 会是想要的数组，每一项是正常的值
+
+// 上面可以简写
+var aa = await Promise.all(
+    v.map(async (item)=>{
+        var lists = (await tryAwait('get', '/permission/menu/' + item.id, {})).model || [];
+        item.lists = lists;
+        console.log(item)
+        return item;
+    })
+)
+```
+* async await如果直接执行出错，会导致后面的代码都不执行，所以需要用到try catch捕获异常处理
+
+### async await 捕获异常
+* 直接执行 await somePromiseFun()， 如果存在异常错误，会导致后面的代码全都不执行
+```
+try{
+    await somePromiseFun()
+}
+catch(e){
+    console.log(e);
+}
+```
 
 ### co模块约定，yield命令后面只能是 Thunk 函数或 Promise 对象，而async函数的await命令后面，可以是Promise 对象和原始类型的值（数值、字符串和布尔值，但这时等同于同步操作）。
 
@@ -101,17 +137,6 @@ class A{
     funA(){      
         // do sth
     }
-}
-```
-
-### async await 捕获异常
-* 直接执行 await somePromiseFun()， 如果存在异常错误，会导致后面的代码全都不执行
-```
-try{
-    await somePromiseFun()
-}
-catch(e){
-    console.log(e);
 }
 ```
 
