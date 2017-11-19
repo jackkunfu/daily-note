@@ -392,3 +392,45 @@ export function initUse (Vue: GlobalAPI) {
 
 ### 把vue对象直接重置为空对象，会影响数据之间的双向动态绑定
 * 可以用Objdect.keys(someObj).map((v)=>{ this.$set(this.someObj, v, '') })来把数据还原为空字符串
+
+### vue-cli webpack 打包后 vendor.js很大的解决方法
+* 外部引用基础组件，同时webpack配置externals
+  - vue vue-router vuex element-ui组件等
+  - script标签引用在index.html,不用编译，包也比直接import的包小很多
+  - 这种方法主要是把Vue VueRouter Vuex ELEMENT等挂载到全局window上，代码js中可以直接获取到
+  - 须注意须引用UMD规范的插件文件
+    + 例如vue, 须引用vue.min.js vue.runtime.min.js等
+    + 这些文件采用兼容amd commonjs规范的写法，main.js可以不变，仍是import来获取这些构造函数对象
+  - 引用vue.runtime.min.js须注意，vue.runtime.min.js没有编译template功能
+  ```
+  // 改为render渲染
+  new Vue({
+    el: '#app',
+    router,
+    store,
+    // template: '<App/>',
+    render(h){
+        return h(App)
+    },
+    // components: { App }
+  });
+  ```
+  - webpack externals配置
+  ```
+    externals: {
+        "element-ui": 'window.ELEMENT',
+        'vue': 'window.Vue',
+        'vue-router': 'window.VueRouter',
+        'vuex': 'window.Vuex'
+    }
+  ```
+* 懒加载全局注册的公共模板,可以使公共模板用到时才请求使用，vendor.js减小
+  - 例如：公共地址选择插件
+  ```
+  // 优化前
+  import vDistpicker from 'v-distpicker'
+  Vue.component('v-distpicker', vDistpicker)
+  // 优化后
+  var vDistpicker = r => require.ensure( [], () => r(require('v-distpicker')) )
+  Vue.component('v-distpicker', vDistpicker)
+  ```
