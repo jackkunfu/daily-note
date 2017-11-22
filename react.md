@@ -51,3 +51,8 @@ this.props.data的值就是传入的 {a:1}
 * 定义组件的默认props
 * AppComponent.defaultProps = { key: value, ... }
 
+### 渲染组件绑定事件
+* <div onClick={this.fun.bind(this)}></div>
+  - 如果fun方法里有用构造类的其他方法通过this调用，可能会报错
+  - 绑定在dom上的方法去调用类中别的方法，可能this为undefined，所以应加上.bind(this)来绑定this
+
