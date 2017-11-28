@@ -79,7 +79,7 @@ async function aa(){
 }
 aa();    // 1
 ```
-* async 函数总是返回promise，返回值只是一个primitive值，async函数也会通过return自动将返回值包装成一个Promise对象返回
+* async 函数总是返回promise，即使直接返回一个primitive值(return 1;)，async函数也会通过return自动将返回值包装成一个Promise对象返回
 ```
 var a = someArr.map(async (item)=>{
     var lists = (await tryAwait('get', '/permission/menu/' + item.id, {})).model || [];
@@ -120,17 +120,16 @@ catch(e){
 
 
 ### class
+* 基本写法
 ```
 class A{
     constructor(x, y){
         this.x = x;
         this.y = y;
 
-
-        // 如果想给funA 使用 bind 绑定到this，
         // 直接在方法后面写.bind(this)，会报错
         // 解决方法是在constructor里指定，如下
-        this.funA = this.funA.bind(this);
+        this.funA = this.funA.bind(this);  // 某些地方调用this.funA时，可能this指向会出错，可以在此bind this来修复，例如在jsx代码中
 
     }
 
@@ -139,6 +138,9 @@ class A{
     }
 }
 ```
+* 与es5构造函数写法的不同
+    - class不会变量提升， class未声明之前调用，会出错
+    - class 具体执行时必须用new 实例，不然会报错，es5中的构造函数本身也是方法，可直接执行
 
 ### 箭头函数this
 * 默认会继承上层的this
