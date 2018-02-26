@@ -15,6 +15,31 @@
     - super()    // 调用父级的constructor属性方法，extends类时须用，不然可能会报错 this is not defined
     - super.fun()    // 传入this调用父级的静态方法  相当与  Parent.fun.call(this, arguments)
 
+### Object.assign
+* 给target对象拓展source对象的属性
+    - Object.assign(target, source)
+* source对象中的属性值被覆盖原有的target中相同属性名的值
+* 属于浅拷贝
+
+### Object.create
+* 创建一个对象，以第一个参数对象的各个值为各个属性
+    - var a = Object.create({ s: 1})
+    - a.s     //   得到 1
+    - a       //  得到一个 {}
+* 第二个参数是配置第一个原型参数中的各个属性的各个属性，是否可配，可写，可枚举..
+    - 上面Object.create({ s: 1})  得到的 a  console.log(a)  时 显示一个空对象是因为，默认 writable enumerable configurable都是false，不会被列举出来
+    - var a = Object.create({ s: 1 }, {
+        s: {
+            value: 42,
+            writable: true,
+            enumerable: true,
+            configurable: true 
+        }
+    })
+    - a.s     //   得到 1
+    - a       //  得到一个 { s: 42 }
+    - 配置writable enumerable configurable为true 以及新的value  console.log(a)时就能显示 具体的属性以及属性值了
+
 ### koa中可以直接用 var data = yield Promise.resolve(data):
 * 因为koa中集成了co，可以直接获取生成器函数的执行结果
 * [koa-co](http://book.apebook.org/minghe/koa-action/co/start.html)
