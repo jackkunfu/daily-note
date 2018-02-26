@@ -10,6 +10,11 @@
     - var slice = new Array()的slice方法
     - var slice = Array.prototype.slice
 
+### class
+* super
+    - super()    // 调用父级的constructor属性方法，extends类时须用，不然可能会报错 this is not defined
+    - super.fun()    // 传入this调用父级的静态方法  相当与  Parent.fun.call(this, arguments)
+
 ### koa中可以直接用 var data = yield Promise.resolve(data):
 * 因为koa中集成了co，可以直接获取生成器函数的执行结果
 * [koa-co](http://book.apebook.org/minghe/koa-action/co/start.html)
