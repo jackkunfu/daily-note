@@ -13,7 +13,9 @@
 ### class
 * super
     - super()    // 调用父级的constructor属性方法，extends类时须用，不然可能会报错 this is not defined
-    - super.fun()    // 传入this调用父级的静态方法  相当与  Parent.fun.call(this, arguments)
+        + super(arguments)   相当于 Parent.call(this, arguments)
+    - super.fun()    // 传入this调用父级的静态方法  Parent.fun.call(this, arguments)
+        + super.fun(arguments)   相当于 Parent.fun.call(this, arguments)
 
 ### Object.assign
 * 给target对象拓展source对象的属性
