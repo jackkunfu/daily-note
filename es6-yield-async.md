@@ -52,6 +52,32 @@ co(function* (){
 })
 ```
 
+### Object.defineProperty
+* 四个属性： configurable writable value enumerable
+* configurable
+    - configurable为false时，单项操作，不能撤回，以为已经不可配置，不能配置为true了
+    - configurable为false时，可以禁止delete操作
+* 如果设置的属性值是一个新的对象，几个属性设置为false的效果，不影响深层次的对象操作，如有需要继续深层次使用Object.defineProperty
+
+### Object.preventExtensions
+* 禁止扩展：不能给对象增加新的属性，可对原有属性值进行修改
+
+### Object.seal
+* 密封：在Object.preventExtensions 基础上把所有属性的configurable设置为false
+    - 禁止扩展
+    - 禁止配置
+    - 可以修改已有属性值
+
+### Object.freeze
+* 冻结：在Object.seal 基础上把所有属性的writable设置为false
+    - 不可扩展
+    - 不可配置
+    - 不可修改已有属性值
+
+### hasOwnProperty
+* 判断对象是否包含某个属性，不包含原型链上的
+* in 操作符会检查原型链上的属性
+
 * [co实现原理](http://book.apebook.org/minghe/koa-action/co/co.html)
 ```javascript
 function co(fn) {
