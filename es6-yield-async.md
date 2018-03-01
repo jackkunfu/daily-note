@@ -42,16 +42,6 @@
     - a       //  得到一个 { s: 42 }
     - 配置writable enumerable configurable为true 以及新的value  console.log(a)时就能显示 具体的属性以及属性值了
 
-### koa中可以直接用 var data = yield Promise.resolve(data):
-* 因为koa中集成了co，可以直接获取生成器函数的执行结果
-* [koa-co](http://book.apebook.org/minghe/koa-action/co/start.html)
-```javascript
-co(function* (){
-	var data = yield Promise.resolve({a:1});
-	console.log(data.a)    // 1
-})
-```
-
 ### Object.defineProperty
 * 四个属性： configurable writable value enumerable
 * configurable
@@ -77,6 +67,36 @@ co(function* (){
 ### hasOwnProperty
 * 判断对象是否包含某个属性，不包含原型链上的
 * in 操作符会检查原型链上的属性
+
+### someObj.propertyIsEnumerable('someKey')
+* someObj 中是否存在可枚举的 属性名未为someKey的属性
+* someKey 是可枚举的，直接拥有的，并且不是原型链上的属性才会返回true
+
+### Object.keys
+* 只返回可枚举的属性名数组
+* 只查找本身，不查找原型链上的
+
+### Object.getOwnPropertyNames
+* 返回所有属性名数组，包括不可枚举的
+* 只查找本身，不查找原型链上的
+
+
+
+
+
+
+
+
+
+### koa中可以直接用 var data = yield Promise.resolve(data):
+* 因为koa中集成了co，可以直接获取生成器函数的执行结果
+* [koa-co](http://book.apebook.org/minghe/koa-action/co/start.html)
+```javascript
+co(function* (){
+	var data = yield Promise.resolve({a:1});
+	console.log(data.a)    // 1
+})
+```
 
 * [co实现原理](http://book.apebook.org/minghe/koa-action/co/co.html)
 ```javascript
