@@ -53,7 +53,7 @@
 * 禁止扩展：不能给对象增加新的属性，可对原有属性值进行修改
 
 ### Object.seal
-* 密封：在 Object.preventExtensions 基础上把所有属性的configurable设置为false
+* 密封：在 Object.preventExtensions 基础上把所有属性的 configurable 设置为 false
     - 禁止扩展
     - 禁止配置
     - 可以修改已有属性值
@@ -72,13 +72,59 @@
 * 判断 someObj 中是否存在可枚举的 属性名未为someKey的属性，返回值为 true 或 false
 * someKey 为可枚举的，并且不是原型链上的属性才会返回true
 
-### Object.keys
+### 对象遍历： Object.keys
 * 只返回可枚举的属性名数组
 * 只查找本身，不查找原型链上的
 
 ### Object.getOwnPropertyNames
 * 返回所有属性名数组，包括不可枚举的
 * 只查找本身，不查找原型链上的
+
+### 对象遍历 for in
+* 遍历对象的可枚举属性，包括原型链上的
+
+### 数组遍历
+* for循环
+* for in
+    - 回调参数值是每一项的属性
+* for of  数组中内置 @@iterator 对象，可以用for of遍历，ES6 中的符号Symbol.iterator 来获取数组对象的@@iterator 内部属性
+    - 回调参数值是每一项的具体的值
+    - 原理过程是会向被访问对象请求一个迭代器对象，然后调用迭代器的next()方法来遍历所有值
+    - var arr = [ 1, 2, 3 ]
+    - var it = arr[Symbol.iterator]();    // 声明一个此数组迭代器
+    - it.next()     // { value:1, done:false }
+    - it.next()     // { value:2, done:false }
+    - it.next()     // { value:3, done:false }     // 调到 3 的时候并没有结束
+    - it.next()     // { done:true }     //  这里再调一次才会结束
+    - 和数组不同，普通对象没有内置的@@iterator，不能用for of 遍历，可以手动给对象增加@@iterator，来使对象能用for of
+    - var obj = { a: 1, b: 2 }
+    - Object.defineProperty(obj, Symbol.iterator, {       //  你不知道的javascript上卷
+        enumerable: false,
+        writable: false,
+        configurable: true,
+        value: function(){
+            var idx = 0;
+            var keys = Object.keys(this);
+            var _this = this;
+            return {
+                next: function(){
+                    return {
+                        value: _this[keys[idx++]],
+                        done: (idx > keys.length)
+                    }
+                }
+            }
+        }
+    })
+
+
+* forEach
+    - 会遍历数组中所有值，忽略返回值，不能中间停止
+    - 回调函数中的操作会改变元数组
+* every
+    - 判断数组中是否全部都满足某个条件，返回 true 或 false，全部都满足才返回true
+* some
+    - 判断数组中是否存在满足某个条件，返回 true 或 false，有一个就返回true
 
 
 
