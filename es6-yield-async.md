@@ -5,7 +5,7 @@
     - var hasOwnProperty = new Object()的hasOwnProperty方法
     - var hasOwnProperty = Object.prototype.hasOwnProperty
 * var {slice} = []
-    - var {slice} = new Array()  var
+    - var {slice} = new Array()
     - var {slice: slice} = new Array()
     - var slice = new Array()的slice方法
     - var slice = Array.prototype.slice
@@ -28,7 +28,7 @@
     - var a = Object.create({ s: 1})
     - a.s     //   得到 1
     - a       //  得到一个 {}
-* 第二个参数是配置第一个原型参数中的各个属性的各个属性，是否可配，可写，可枚举..
+* 第二个参数是配置第一个原型参数中的各个属性的各个属性，是否可配置，可修改，可枚举..
     - 上面Object.create({ s: 1})  得到的 a  console.log(a)  时 显示一个空对象是因为，默认 writable enumerable configurable都是false，不会被列举出来
     - var a = Object.create({ s: 1 }, {
         s: {
@@ -43,9 +43,9 @@
     - 配置writable enumerable configurable为true 以及新的value  console.log(a)时就能显示 具体的属性以及属性值了
 
 ### Object.defineProperty
-* 四个属性： configurable writable value enumerable
+* 四个属性： value configurable writable enumerable
 * configurable
-    - configurable为false时，单项操作，不能撤回，以为已经不可配置，不能配置为true了
+    - configurable为false时，单项操作，不能撤回，因为已经不可配置，不能配置为true了
     - configurable为false时，可以禁止delete操作
 * 如果设置的属性值是一个新的对象，几个属性设置为false的效果，不影响深层次的对象操作，如有需要继续深层次使用Object.defineProperty
 
@@ -53,24 +53,24 @@
 * 禁止扩展：不能给对象增加新的属性，可对原有属性值进行修改
 
 ### Object.seal
-* 密封：在Object.preventExtensions 基础上把所有属性的configurable设置为false
+* 密封：在 Object.preventExtensions 基础上把所有属性的configurable设置为false
     - 禁止扩展
     - 禁止配置
     - 可以修改已有属性值
 
 ### Object.freeze
-* 冻结：在Object.seal 基础上把所有属性的writable设置为false
+* 冻结：在 Object.seal 基础上把所有属性的writable设置为false
     - 不可扩展
     - 不可配置
     - 不可修改已有属性值
 
 ### hasOwnProperty
-* 判断对象是否包含某个属性，不包含原型链上的
+* 判断对象是否包含某个属性，不包含原型链上的, 包括不可枚举的也返回true
 * in 操作符会检查原型链上的属性
 
 ### someObj.propertyIsEnumerable('someKey')
-* someObj 中是否存在可枚举的 属性名未为someKey的属性
-* someKey 是可枚举的，直接拥有的，并且不是原型链上的属性才会返回true
+* 判断 someObj 中是否存在可枚举的 属性名未为someKey的属性，返回值为 true 或 false
+* someKey 为可枚举的，并且不是原型链上的属性才会返回true
 
 ### Object.keys
 * 只返回可枚举的属性名数组
