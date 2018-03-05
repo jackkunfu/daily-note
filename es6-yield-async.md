@@ -42,6 +42,17 @@
     - a       //  得到一个 { s: 42 }
     - 配置writable enumerable configurable为true 以及新的value  console.log(a)时就能显示 具体的属性以及属性值了
 
+### Object.getOwnPropertyDescriptor   // 获取属性相关描述
+* 返回值对象 { value: xx, configurable: true, enumerable: true, writable: true }
+
+### Object.getOwnPropertyDescriptors   // 获取所有属性相关描述
+* 返回值:  
+{
+    key1: { value: xx, configurable: true, enumerable: true, writable: true },
+    key2: { value: xx, configurable: true, enumerable: true, writable: true },
+    key3: { value: xx, configurable: true, enumerable: true, writable: true }
+}
+
 ### Object.defineProperty
 * 四个属性： value configurable writable enumerable
 * configurable
