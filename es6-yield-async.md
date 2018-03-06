@@ -98,7 +98,8 @@
 * for循环
 * for in
     - 回调参数值是每一项的属性
-* for of  数组中内置 @@iterator 对象，可以用for of遍历，ES6 中的符号Symbol.iterator 来获取数组对象的@@iterator 内部属性
+* for of 数组中内置 @@iterator 对象，可以用for of遍历，ES6 中的符号Symbol.iterator 来获取数组对象的@@iterator 内部属性
+    - for..of会寻找内置或者自定义的 @@iterator 对象并调用它的next() 方法来遍历数据值
     - 回调参数值是每一项的具体的值
     - 原理过程是会向被访问对象请求一个迭代器对象，然后调用迭代器的next()方法来遍历所有值
     - var arr = [ 1, 2, 3 ]
@@ -110,7 +111,7 @@
     - 和数组不同，普通对象没有内置的@@iterator，不能用for of 遍历，可以手动给对象增加@@iterator，来使对象能用for of
     - var obj = { a: 1, b: 2 }
     - Object.defineProperty(obj, Symbol.iterator, {       //  你不知道的javascript上卷
-        enumerable: false,
+        enumerable: false,    //  不可枚举
         writable: false,
         configurable: true,
         value: function(){
@@ -127,6 +128,24 @@
             }
         }
     })
+    - 带有 迭代器 属性的对象都可以用 for of 遍历，迭代器对象key键值 Symbol.iterator
+    - var randoms = {
+        [Symbol.iterator] : function () {
+            return {
+                next: function(){
+                    return {
+                        value: Math.random()      // 此处无done  调用时应手动控制结束
+                    }
+                }
+            }
+        }
+    }
+    
+    var blankArr = []
+    for(var v of randoms){
+        blankArr.push(v);
+        if(blankArr.length == 100) break;      // 手动控制  break  来结束
+    }
 
 
 * forEach
@@ -138,10 +157,8 @@
     - 判断数组中是否存在满足某个条件，返回 true 或 false，有一个就返回true
 
 
-
-
-
-
+### 类
+* 多态：父类的通用行为可以被子类用更特殊的行为重写。实际上，相对多态性允许我们从重写行为中引用基础行为。
 
 
 
