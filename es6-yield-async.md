@@ -17,6 +17,34 @@
     - super.fun()    // 传入this调用父级的静态方法  Parent.fun.call(this, arguments)
         + super.fun(arguments)   相当于 Parent.fun.call(this, arguments)
 
+### instanceof
+* 判断对象是不是某个构造函数的实例
+    - var a = {};   a instanceof Object     // true
+
+### Object.getPrototypeOf()
+* 获取对象的原型对象
+    - function A(){}
+    - var a = new A()
+    - Object.getPrototypeOf(a) === A.prototype     // true
+    - Object.getPrototypeOf(a).constructor === A    // true
+    
+    - Object.getPrototypeOf( Object ) === Function.prototype;   // true
+    - Object.getPrototypeOf( Object ) === Object.prototype;   // false
+
+    - var obj = new Object()
+    - Object.getPrototypeOf( obj ) === Object.prototype;   // true
+    - Object.getPrototypeOf( obj ) === Function.prototype;   // false
+
+
+### isPrototypeOf
+* 获取原型是否是属于对象的原型, 构造函数的原型链，构造函数原型链的原型链。。。Object.prototype   都属于，都返回true
+    - function A(){}
+    - var a = new A()
+    - A.prototype.isPrototypeOf(a)   // true
+    - A.isPrototypeOf(a)   // false
+    - Object.prototype.isPrototypeOf(a)    // true
+    - Object.isPrototypeOf(a)    // false
+
 ### Object.assign
 * 给target对象拓展source对象的属性
     - Object.assign(target, source)
@@ -24,14 +52,15 @@
 * 属于浅拷贝
 
 ### Object.create
-* 创建一个对象，以第一个参数对象的各个值为各个属性
+* 创建一个以第一个参数对象为原型的对象
     - var a = Object.create({ s: 1})
     - a.s     //   得到 1
     - a       //  得到一个 {}
-* 第二个参数是配置第一个原型参数中的各个属性的各个属性，是否可配置，可修改，可枚举..
-    - 上面Object.create({ s: 1})  得到的 a  console.log(a)  时 显示一个空对象是因为，默认 writable enumerable configurable都是false，不会被列举出来
+    - console.log(a.__proto__)     // { s: 1 }
+    - a.__proto__.constructor == Object    // true
+* 第二个参数是配置新对象中的各个属性以及属性值的各个属性描述：是否可配置，可修改，可枚举，属性值
     - var a = Object.create({ s: 1 }, {
-        s: {
+        d: {
             value: 42,
             writable: true,
             enumerable: true,
@@ -39,8 +68,7 @@
         }
     })
     - a.s     //   得到 1
-    - a       //  得到一个 { s: 42 }
-    - 配置writable enumerable configurable为true 以及新的value  console.log(a)时就能显示 具体的属性以及属性值了
+    - a       //  得到一个 { d: 42 }
 
 ### Object.getOwnPropertyDescriptor   // 获取属性相关描述
 * 返回值对象 { value: xx, configurable: true, enumerable: true, writable: true }
