@@ -35,7 +35,6 @@
     - Object.getPrototypeOf( obj ) === Object.prototype;   // true
     - Object.getPrototypeOf( obj ) === Function.prototype;   // false
 
-
 ### isPrototypeOf
 * 获取原型是否是属于对象的原型, 构造函数的原型链，构造函数原型链的原型链。。。Object.prototype   都属于，都返回true
     - function A(){}
@@ -53,10 +52,12 @@
 
 ### Object.create
 * 创建一个以第一个参数对象为原型的对象
-    - var a = Object.create({ s: 1})
+    - var obj = { s: 1}
+    - var a = Object.create(obj)
     - a.s     //   得到 1
-    - a       //  得到一个 {}
-    - console.log(a.__proto__)     // { s: 1 }
+    - obj.s = 2
+    - a.s     //   得到 2
+    - console.log(a.__proto__)     // { s: 2 }
     - a.__proto__.constructor == Object    // true
 * 第二个参数是配置新对象中的各个属性以及属性值的各个属性描述：是否可配置，可修改，可枚举，属性值
     - var a = Object.create({ s: 1 }, {
@@ -69,6 +70,15 @@
     })
     - a.s     //   得到 1
     - a       //  得到一个 { d: 42 }
+
+### 属性设置和屏蔽
+* 获取对象的某个属性值的时候，总是会选择原型链中最底层的该属性的值，其他的高层中的同名属性值都会被屏蔽
+* 如果在[[Prototype]] 链上层存在名为foo 的普通数据访问属性并且没有被标记为只读（writable:false），那就会直接在myObject 中添加一个名为foo的新
+属性，它是屏蔽属性。
+* 如果在[[Prototype]] 链上层存在foo，但是它被标记为只读（writable:false），那么无法修改已有属性或者在myObject 上创建屏蔽属性。如果运行在严格模式下，代码会
+抛出一个错误。否则，这条赋值语句会被忽略。总之，不会发生屏蔽。
+* 如果在[[Prototype]] 链上层存在foo 并且它是一个setter，那就一定会调用这个setter。foo 不会被添加到（或者说屏蔽于）myObject，也不会重新定义foo 这
+个setter。
 
 ### Object.getOwnPropertyDescriptor   // 获取属性相关描述
 * 返回值对象 { value: xx, configurable: true, enumerable: true, writable: true }
@@ -184,11 +194,8 @@
 * some
     - 判断数组中是否存在满足某个条件，返回 true 或 false，有一个就返回true
 
-
 ### 类
 * 多态：父类的通用行为可以被子类用更特殊的行为重写。实际上，相对多态性允许我们从重写行为中引用基础行为。
-
-
 
 ### koa中可以直接用 var data = yield Promise.resolve(data):
 * 因为koa中集成了co，可以直接获取生成器函数的执行结果
