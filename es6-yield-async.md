@@ -52,7 +52,7 @@
 
 ### Object.create
 * 创建一个以第一个参数对象为原型的对象
-    - var obj = { s: 1}
+    - var obj = { s: 1 }
     - var a = Object.create(obj)
     - a.s     //   得到 1
     - obj.s = 2
@@ -65,7 +65,7 @@
             value: 42,
             writable: true,
             enumerable: true,
-            configurable: true 
+            configurable: true
         }
     })
     - a.s     //   得到 1
@@ -73,17 +73,15 @@
 
 ### 属性设置和屏蔽
 * 获取对象的某个属性值的时候，总是会选择原型链中最底层的该属性的值，其他的高层中的同名属性值都会被屏蔽
-* 如果在[[Prototype]] 链上层存在名为foo 的普通数据访问属性并且没有被标记为只读（writable:false），那就会直接在myObject 中添加一个名为foo的新
-属性，它是屏蔽属性。
-* 如果在[[Prototype]] 链上层存在foo，但是它被标记为只读（writable:false），那么无法修改已有属性或者在myObject 上创建屏蔽属性。如果运行在严格模式下，代码会
-抛出一个错误。否则，这条赋值语句会被忽略。总之，不会发生屏蔽。
-* 如果在[[Prototype]] 链上层存在foo 并且它是一个setter，那就一定会调用这个setter。foo 不会被添加到（或者说屏蔽于）myObject，也不会重新定义foo 这
-个setter。
+* 如果在[[Prototype]] 链上层存在名为foo 的普通数据访问属性并且没有被标记为只读（writable:false），那就会直接在myObject 中添加一个名为foo的新属性，它是屏蔽属性。
+* 如果在[[Prototype]] 链上层存在foo，但是它被标记为只读（writable:false），那么无法修改已有属性或者在myObject 上创建屏蔽属性。如果运行在严格模式下，代码会抛出一个错误。否则，这条赋值语句会被忽略。总之，不会生屏蔽。
+* 如果在[[Prototype]] 链上层存在foo 并且它是一个setter，那就一定会调用这个setter。foo 不会被添加到（或者说屏蔽于）myObject，也不会重新定义foo 这个setter。
 
 ### Object.getOwnPropertyDescriptor   // 获取属性相关描述
+* Object.getOwnPropertyDescriptor(obj, 'key')
 * 返回值对象 { value: xx, configurable: true, enumerable: true, writable: true }
 
-### Object.getOwnPropertyDescriptors   // 获取所有属性相关描述
+### Object.getOwnPropertyDescriptors   // 获取所有自身属性相关描述，无则返回空对象{}
 * 返回值:  
 {
     key1: { value: xx, configurable: true, enumerable: true, writable: true },
