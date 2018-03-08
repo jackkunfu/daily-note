@@ -10,6 +10,19 @@
     - var slice = new Array()的slice方法
     - var slice = Array.prototype.slice
 
+### 字典 ？
+
+### 代理 proxy  ??? 
+
+### 委托关联（继承）
+* Object.setPrototypeOf(child.prototype, parent.prototype)
+    - 把child.prototype对象的原型链对象设置为parent.prototype，实现委托关联（继承）
+* child.prototype = Object.create(parent.prototype)
+    - 把child.prototype设置为parent.prototype，实现委托关联（继承）
+* 不推荐，有副作用的
+    - child.prototype = parent.prototype; // 直接引用，改变child.prototype会影响parent.prototype
+    - child.prototype = new parent();     // parent构造函数本身的方法逻辑会影响child实例
+
 ### class
 * 多态：父类的通用行为可以被子类用更特殊的行为重写。实际上，相对多态性允许我们从重写行为中引用基础行为。
 * super    // extends 继承中的 constructor 中的 super()相当于es5中的 Parent.call(this, argements)
