@@ -11,7 +11,8 @@
     - var slice = Array.prototype.slice
 
 ### class
-* super
+* 多态：父类的通用行为可以被子类用更特殊的行为重写。实际上，相对多态性允许我们从重写行为中引用基础行为。
+* super    // extends 继承中的 constructor 中的 super()相当于es5中的 Parent.call(this, argements)
     - super()    // 调用父级的constructor属性方法，extends类时须用，不然可能会报错 this is not defined
         + super(arguments)   相当于 Parent.call(this, arguments)
     - super.fun()    // 传入this调用父级的静态方法  Parent.fun.call(this, arguments)
@@ -58,7 +59,7 @@
     - obj.s = 2
     - a.s     //   得到 2
     - console.log(a.__proto__)     // { s: 2 }
-    - a.__proto__.constructor == Object    // true
+    - a.__proto__.constructor == Object    // true  obj原型对象中没有 constructor 属性，所以继续向上委托查找，委托到Object.prototype上得到Object.prototype.constructor 所以是 Object
 * 第二个参数是配置新对象中的各个属性以及属性值的各个属性描述：是否可配置，可修改，可枚举，属性值
     - var a = Object.create({ s: 1 }, {
         d: {
@@ -191,9 +192,6 @@
     - 判断数组中是否全部都满足某个条件，返回 true 或 false，全部都满足才返回true
 * some
     - 判断数组中是否存在满足某个条件，返回 true 或 false，有一个就返回true
-
-### 类
-* 多态：父类的通用行为可以被子类用更特殊的行为重写。实际上，相对多态性允许我们从重写行为中引用基础行为。
 
 ### koa中可以直接用 var data = yield Promise.resolve(data):
 * 因为koa中集成了co，可以直接获取生成器函数的执行结果
