@@ -65,25 +65,38 @@
 * 属于浅拷贝
 
 ### Object.create
-* 创建一个以第一个参数对象为原型的对象
-    - var obj = { s: 1 }
-    - var a = Object.create(obj)
-    - a.s     //   得到 1
-    - obj.s = 2
-    - a.s     //   得到 2
-    - console.log(a.__proto__)     // { s: 2 }
-    - a.__proto__.constructor == Object    // true  obj原型对象中没有 constructor 属性，所以继续向上委托查找，委托到Object.prototype上得到Object.prototype.constructor 所以是 Object
-* 第二个参数是配置新对象中的各个属性以及属性值的各个属性描述：是否可配置，可修改，可枚举，属性值
-    - var a = Object.create({ s: 1 }, {
-        d: {
-            value: 42,
+* 创建一个以第一个参数对象为原型的对象, 第二个参数是新创建对象的各个值描述
+```
+    var obj = {
+        a: 2
+    };
+    var newObj = Object.create( obj, {
+        b: {
+            enumerable: false,
             writable: true,
+            configurable: false,
+            value: 3
+        },
+        c: {
             enumerable: true,
-            configurable: true
+            writable: false,
+            configurable: false,
+            value: 4
         }
-    })
-    - a.s     //   得到 1
-    - a       //  得到一个 { d: 42 }
+    });
+    newObj.hasOwnProperty( "a" );    // false
+    newObj.hasOwnProperty( "b" );    // true
+    newObj.hasOwnProperty( "c" );    // true
+    newObj.a;    // 2
+    newObj.b;    // 3
+    newObj.c;    // 4
+
+    Object.getPrototypeOf( newObj )     // { a: 2 }
+    Object.getPrototypeOf( newObj ) === obj    // true
+
+    // obj 本身没有 constructor 属性，查找会继续委托向上查找到 Object.prototype 上的 constructor 的值为 Object
+    Object.getPrototypeOf( newObj ).constructor === Object     // true
+```
 
 ### 属性设置和屏蔽
 * 获取对象的某个属性值的时候，总是会选择原型链中最底层的该属性的值，其他的高层中的同名属性值都会被屏蔽
