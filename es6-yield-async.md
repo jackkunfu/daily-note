@@ -16,12 +16,12 @@
 
 ### 委托关联（继承）
 * Object.setPrototypeOf(child.prototype, parent.prototype)
-    - 把child.prototype对象的原型链对象设置为parent.prototype，实现委托关联（继承）
+    - 把child.prototype对象的上层原型对象设置为parent.prototype，实现委托关联（继承）
 * child.prototype = Object.create(parent.prototype)
-    - 把child.prototype设置为parent.prototype，实现委托关联（继承）
+    - 把child.prototype上层原型对象设置为parent.prototype，实现委托关联（继承）
 * 不推荐，有副作用的
     - child.prototype = parent.prototype; // 直接引用，改变child.prototype会影响parent.prototype
-    - child.prototype = new parent();     // parent构造函数本身的方法逻辑会影响child实例
+    - child.prototype = new parent();     // parent构造函数本身constructor()的方法逻辑会影响child实例
 
 ### class
 * 多态：父类的通用行为可以被子类用更特殊的行为重写。实际上，相对多态性允许我们从重写行为中引用基础行为。
@@ -69,7 +69,8 @@
 * 属于浅拷贝
 
 ### Object.create
-* 创建一个以第一个参数对象为原型的对象, 第二个参数是新创建对象的各个值描述
+* 创建一个以第一个参数对象为原型的对象, 第二个参数是新创建对象的各个值以及描述
+* 如果第二个参数为空，则返回一个空对象，原型是第一个参数
 ```
     var obj = {
         a: 2
