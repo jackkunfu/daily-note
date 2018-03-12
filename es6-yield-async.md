@@ -36,7 +36,7 @@
     - var a = {};   a instanceof Object     // true
 
 ### Object.getPrototypeOf()
-* 获取对象的原型对象，主要是看传入对象是哪个构造函数实例话的，返回的是该构造函数的原型
+* 获取对象的原型对象，主要是看传入对象是构造函数的实例话，返回的是该构造函数的原型
     - function A(){}
     - var a = new A()
     - Object.getPrototypeOf(a) === A.prototype     // true
@@ -51,7 +51,17 @@
 * 实例化的对象的原型对象是 构造函数的原型
 * 构造函数本身的原型对象是 Function.prototype
     - 因为，构造函数本身是相当于 new Function(), 实例化出来的对象，所以 Object.getPrototypeOf() 得到的结果是 Function.prototype
-* class extends 拓展继承的类 Object.getPrototypeOf  返回的是该子类的父类
+* Object.getPrototypeOf 只返回第一级原型对象，原型对象的原型对象不属于
+    - class extends 拓展继承的类 Object.getPrototypeOf  返回的是该子类的父类
+```
+var a = {}
+var b = Object.create(a)
+var c = Object.create(b)
+Object.getPrototypeOf(c) === b    // true
+Object.getPrototypeOf(c) === a    // false
+b.isPrototypeOf(c)     // true
+a.isPrototypeOf(c)     // true
+```
 
 ### isPrototypeOf
 * 获取原型是否是属于对象的原型, 构造函数的原型链，构造函数原型链的原型链。。。Object.prototype   都属于，都返回true
