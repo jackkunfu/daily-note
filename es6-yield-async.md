@@ -30,6 +30,10 @@
         + super(arguments)   相当于 Parent.call(this, arguments)
     - super.fun()    // 传入this调用父级的静态方法  Parent.fun.call(this, arguments)
         + super.fun(arguments)   相当于 Parent.fun.call(this, arguments)
+        - super可以找到继承的父级的方法以及父级继承的父级的方法
+    - toMethod  ？
+* 屏蔽
+    - 属性名和属性方法名称相同时，会屏蔽同名的属性方法，调用方法时会报错 xx is not a function
 
 ### instanceof
 * 判断对象是不是某个构造函数的实例
