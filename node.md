@@ -1,3 +1,10 @@
+### module.exports / exports
+* exports 指向 module.exports的引用，初始时指向同一个地方
+* 如果module.exports = { //... }, 重新赋值了新对象，两个指向就不是一个对象了
+  - require 引用的是 module.exports 指向的对象
+  - 如果 module.exports 重新指向新的对象，则exports导出的就不能被 require 获取到, exports 的将被忽略
+* 如果只是 module.exports.xxx = xx 这种不改变同一个指向对象的，则 exports 的属性及方法还都能被require到
+
 ### node 常用模块
 *url*
 * url.parse(url, false, false)
@@ -10,7 +17,6 @@
     - // 把url, path拼接起来
     - // 如果url中有好几级，会把原有的多级去掉
     - url.resolve('http://www.aa.com/b/c/d', '/e/f') // 'http://www.aa.com/e/f'
-
 
 *querystring*
 * querystring.stringify()   // 把对象序列化成字符串
@@ -27,8 +33,6 @@
 *启动项目时设置环境变量命令，兼容window和mac*
     - npm i cross-env --save-dev 
     - cross-env NODE_ENV=development && ....
-
-
 
 ## http
 * http.get
@@ -135,7 +139,6 @@ emit.removeListener('data', f1)
 // 触发执行注册的事件
 emit.emit('data')
 ```
-
 
 
 ### V8优化技术
