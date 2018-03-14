@@ -21,6 +21,8 @@ arr.reverse()
 var str = '12345'
 str.split('').reverse().join('')   // '54321'
 
+typeof NaN === 'number'   // true
+
 // 指定数字展示小数点之后位数，四舍五入，不够补零
 var a = 42.59;
 a.toFixed( 0 ); // "43"
@@ -64,3 +66,16 @@ if (!Number.isInteger) {
 Number.isInteger( 42 ); // true
 Number.isInteger( 42.000 ); // true
 Number.isInteger( 42.3 ); // false
+
+// 判断数字是不是安全的整数，es6 Number.isSafeInteger
+if (!Number.isInteger) {
+    Number.isSafeInteger = function(num) {
+        return Number.isInteger(num) && 
+            Math.abs(num) <= Math.pow(2, 52);
+    };
+}
+
+// isNaN 判断一个值是不是数字
+// Numeber.isNaN 判断一个值是不是 NaN
+isNaN('foo')   // true
+Numeber.isNaN('foo')   // false
