@@ -128,3 +128,43 @@ var c = new Boolean( true );
 a.valueOf(); // "abc"
 b.valueOf(); // 42
 c.valueOf(); // true
+
+// new Array(1,2,3)  和  Array(1,2,3)  一样的效果，Array可以省略掉new 不过一般直接声明 [1,2,3]
+
+// 当前时间戳
+Date.now();   // es5 es6
+if(!Date.now){
+    Date.now = function(){
+        return (new Date()).getTime();
+    }
+}
+
+// throw 后面的都不会执行相当于return了
+
+// Symbol: 符号，不能用new构造实例，不然会报错，并非对象，属于一种简单标量基本类型
+var mysymbol = Symbol('my own symbol');
+mysymbol;    // Symbol(my own symbol)
+mysym.toString();    // "Symbol(my own symbol)"
+typeof mysym;    // "symbol"
+
+var a = { };
+a[mysym] = "foobar";
+
+// getOwnPropertySymbols
+Object.getOwnPropertySymbols( a );    // [ Symbol(my own symbol) ]
+
+// String.prototype
+// indexOf 在字符串中找到指定子字符串首次出现的位置
+'aabbccddbcc'.indexOf('bcc')   // 3
+
+// charAt  获得字符串指定位置上的字符。
+'aabbccddbcc'.charAt(3)    // b
+
+// substr  substring 截取
+'aabbccddbcc'.substr(3, 5)   // "bccdd"  前start  后length
+'aabbccddbcc'.substring(3, 5)   // "bc"    start  end  不分前后，小的start 大的 end 负数会直接变为零
+'aabbccddbcc'.substring(3, 5)   // "bc"    start  end  不分前后，小的start 大的 end 负数会直接变为零
+
+// slice 截取， 如果是负数时，负数都加上字符串总长度求值，第二个参数比第一个小则返回空字符串
+'aabbccddbcc'.slice(3, 5)   // "bc"    前start  后end
+'aabbccddbcc'.slice(3, 1)   // "" 
