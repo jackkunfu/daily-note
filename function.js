@@ -168,3 +168,45 @@ Object.getOwnPropertySymbols( a );    // [ Symbol(my own symbol) ]
 // slice 截取， 如果是负数时，负数都加上字符串总长度求值，第二个参数比第一个小则返回空字符串
 'aabbccddbcc'.slice(3, 5)   // "bc"    前start  后end
 'aabbccddbcc'.slice(3, 1)   // "" 
+
+// 事件 addEventListener
+// 任何事件都有三个阶段：捕获、目标元素、冒泡
+// 第三个参数为true时表示想在捕获阶段处理事件，false表示想在冒泡阶段处理事件，默认是false
+// window.addEventListener  document.addEventListener 事件不管是冒泡还是捕获都会经过window和document区别在于处理顺序不一样
+// 捕获时window先于document       冒泡时document先于window
+window.addEventListener('click',function(){
+    console.log('window addEventListener');
+},true);
+document.addEventListener('click',function(){
+    console.log('document addEventListener')
+},true);
+$('body').click(function(){console.log('body click')})
+document.body.onclick = function(){console.log('111')}
+$(document).on('click',function(){console.log('2222')})
+// 点击下body的结果是
+// window addEventListener
+// document addEventListener
+// body click
+// 111
+// 222
+
+// 上面几个事件的执行顺序调整之后， 
+// 打印顺序基本不变， window 和 document 的最先执行
+// jq 的 on 绑定事件都是最后执行
+// 直接的事件原生和jq谁先申明谁先执行
+$(document).on('click',function(){console.log('2222')})
+document.body.onclick = function(){console.log('111')}
+$('body').click(function(){console.log('body click')})
+document.addEventListener('click',function(){
+    console.log('document addEventListener')
+},true);
+window.addEventListener('click',function(){
+    console.log('window addEventListener');
+},true);
+// 点击下body的结果是
+// window addEventListener
+// document addEventListener
+// 111
+// body click
+// 222
+
