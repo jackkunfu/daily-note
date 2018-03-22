@@ -12,9 +12,18 @@ function toArray1(){
 }
 console.log(toArray1(1, 2, 3))    // [1,2,3]
 
+// ... 操作符
+function toArray2(){
+    return [...arguments]
+}
+toArray2(1,2,3,4,5)
+
+// 数组去重
+var a = [...new Set([1,2,3,3,4,2,1])]    //  [1,2,3,4]
+
 // 数组反转 reverse
 var arr = [1,2,3,4];
-arr.reverse()
+arr.reverse()    //  [4, 3, 2, 1]
 
 // 字符串反转
 // Array.prototype.reverse.call(str)  会报错，达不到目的
