@@ -172,7 +172,7 @@ Object.getOwnPropertySymbols( a );    // [ Symbol(my own symbol) ]
 // substr  substring 截取
 'aabbccddbcc'.substr(3, 5)   // "bccdd"  前start  后length
 'aabbccddbcc'.substring(3, 5)   // "bc"    start  end  不分前后，小的start 大的 end 负数会直接变为零
-'aabbccddbcc'.substring(3, 5)   // "bc"    start  end  不分前后，小的start 大的 end 负数会直接变为零
+'aabbccddbcc'.substring(5, 3)   // "bc"    start  end  不分前后，小的start 大的 end 负数会直接变为零
 
 // slice 截取， 如果是负数时，负数都加上字符串总长度求值，第二个参数比第一个小则返回空字符串
 'aabbccddbcc'.slice(3, 5)   // "bc"    前start  后end
