@@ -170,7 +170,7 @@ Object.getOwnPropertySymbols( a );    // [ Symbol(my own symbol) ]
 'aabbccddbcc'.charAt(3)    // b
 
 // substr  substring 截取
-'aabbccddbcc'.substr(3, 5)   // "bccdd"  前start  后length
+'aabbccddbcc'.substr(3, 5)   // "bccdd"  前start  后length,length<=0时返回''，start为负数时，加上总长度为起始点
 'aabbccddbcc'.substring(3, 5)   // "bc"    start  end  不分前后，小的start 大的 end 负数会直接变为零
 'aabbccddbcc'.substring(5, 3)   // "bc"    start  end  不分前后，小的start 大的 end 负数会直接变为零
 
